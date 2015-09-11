@@ -32,16 +32,16 @@ Features
 
 This script does ...
 
-- (before launch)
-  - Load settings from YAML file
-  - Verify OS user name and Java version
-  - Check the application is already running if the duplicate running is not allowd
-  - Execute pre-launch commands
-  - Logging to syslog
-- Launch the Java application with proper options
-- (after launch)
-  - Logging to syslog
-  - Execute post-launch commands
+* (before launch)
+   * Load settings from YAML file
+   * Verify OS user name and Java version
+   * Check the application is already running if the duplicate running is not allowd
+   * Execute pre-launch commands
+   * Logging to syslog
+* Launch the Java application with proper options
+* (after launch)
+   * Logging to syslog
+   * Execute post-launch commands
 
 ------------
 Dependencies
