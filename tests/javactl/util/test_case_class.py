@@ -61,3 +61,6 @@ class TestCaseClass(TestCase):
 
     def test_repr(self):
         self.assertEqual(repr(Coord(123, 45)), 'Coord(x=123, y=45)')
+
+    def test_values(self):
+        self.assertEqual(Coord(123, 45).values(), {'x': 123, 'y': 45})
