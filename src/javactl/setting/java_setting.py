@@ -44,7 +44,7 @@ class JavaSetting(CaseClass):
                 omap(lambda s: '-XX:PermSize=%s' % s, self.perm_min),
                 omap(lambda s: '-XX:MaxPermSize=%s' % s, self.perm_max),
                 omap(lambda s: '-XX:MaxMetaspaceSize=%s' % s, self.metaspace_max),
-                omap(lambda s: '-Xmn=%s' % s, self.new_min),
+                omap(lambda s: '-Xmn%s' % s, self.new_min),
                 omap(lambda s: '-XX:MaxNewSize=%s' % s, self.new_max),
                 omap(lambda x: '-XX:SurvivorRatio=%d' % x, self.survivor_ratio),
                 omap(lambda x: '-XX:TargetSurvivorRatio=%d' % x, self.target_survivor_ratio),
@@ -101,8 +101,6 @@ class JavaSetting(CaseClass):
         ev = ['-D%s=%s' % (k, v) for k, v in self.env.items()]
         return sv + self.memory.get_opts() + self.jmx.get_opts() + ev + self.option
 
-    def get_environ(self):
-        return {
-            'JAVA_HOME': self.home,
-            'JAVA_OPTS': subprocess.list2cmdline(self.get_opts())
-        }
+    def get_args(self):
+        return [self.get_executable()] + self.get_opts()
+
