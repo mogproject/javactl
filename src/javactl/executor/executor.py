@@ -98,8 +98,8 @@ class Executor(object):
         return self
 
     def execute(self, now):
-        return self._execute_commands(self.setting.pre_commands)._execute_application(now)._execute_commands(
-            self.setting.post_commands)
+        return self._execute_commands(self.setting.pre_commands, now)._execute_application(now)._execute_commands(
+            self.setting.post_commands, now)
 
     def _execute_application(self, now):
         if self.failed:
@@ -112,10 +112,11 @@ class Executor(object):
 
         time_start = time.time()
         if self.setting.dry_run:
-            print('Would execute: cwd=%s, cmd=[\n%s\n], env={\n%s\n}' % (
+            print('Would execute: cwd=%s, cmd=[\n%s\n], env={\n%s\n}, output=%s' % (
                 self.setting.app_setting.home,
                 '\n'.join('  %s' % s for s in self.setting.get_args(now)),
-                '\n'.join('  %s=%s' % kv for kv in self.setting.get_environ().items())
+                '\n'.join('  %s: %s' % kv for kv in self.setting.get_environ(now).items()),
+                oget(self.setting.log_setting.console.get_path(now), 'stdout')
             ))
             ret = 0
         else:
@@ -134,7 +135,7 @@ class Executor(object):
                 self.setting.app_setting.pid_file,
                 shell=False,
                 cwd=self.setting.app_setting.home,
-                env=dict(os.environ, **(oget(self.setting.get_environ(), {}))),
+                env=dict(os.environ, **(oget(self.setting.get_environ(now), {}))),
                 stdin=sys.stdin, stdout=stdout, stderr=stderr)
 
         elapsed = time.time() - time_start
@@ -147,14 +148,14 @@ class Executor(object):
             failed = True
         return self.copy(failed=failed)
 
-    def _execute_commands(self, commands):
+    def _execute_commands(self, commands, now):
         failed = self.failed
         for cmd in commands:
             if self.setting.dry_run:
                 print('Would execute: %s' % cmd)
             else:
                 ret = execute_command(cmd, shell=True, cwd=self.setting.app_setting.home,
-                                      env=self.setting.get_environ())
+                                      env=self.setting.get_environ(now))
                 if ret != 0:
                     self.logger.error('Failed to execute: app=%s, cmd=%s, return_code=%d' % (
                         self.setting.app_setting.name, cmd, ret))

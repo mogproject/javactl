@@ -28,11 +28,11 @@ class AppSetting(CaseClass):
     def is_duplicate_allowed(self):
         return self.pid_file is not None
 
-    def get_args(self, java_executable):
+    def get_args(self, java_args):
         if self.jar is not None:
             if self.entry_point is not None:
-                return [java_executable, '-cp', self.jar, self.entry_point]
+                return java_args + ['-cp', self.jar, self.entry_point]
             else:
-                return [java_executable, '-jar', self.jar]
+                return java_args + ['-jar', self.jar]
         else:
             return [self.command]

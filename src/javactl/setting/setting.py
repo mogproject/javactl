@@ -1,6 +1,6 @@
 from __future__ import division, print_function, absolute_import, unicode_literals
 
-import os
+import subprocess
 from itertools import chain
 import yaml
 import six
@@ -83,13 +83,14 @@ class Setting(CaseClass):
 
     def get_args(self, now):
         return chain.from_iterable([
-            self.app_setting.get_args(self.java_setting.get_executable()),
-            self.java_setting.get_opts(),
-            self.log_setting.get_opts(now),
+            self.app_setting.get_args(self.java_setting.get_args() + self.log_setting.get_opts(now)),
             self.extra_args,
         ])
 
-    def get_environ(self):
-        d = self.java_setting.get_environ()
+    def get_environ(self, now):
+        d = {
+            'JAVA_HOME': self.java_setting.home,
+            'JAVA_OPTS': subprocess.list2cmdline(self.java_setting.get_opts() + self.log_setting.get_opts(now))
+        }
         d.update(self.os_setting.env)
         return d
