@@ -24,7 +24,7 @@ java:
 #    perm_min: 128M             # will be `-XX:PermSize=128M`, not applicable to Java >= 8
 #    perm_max: 256M             # will be `-XX:MaxPermSize=256M`, not applicable to Java >= 8
     metaspace_max: 2G          # will be `-XX:MaxMetaspaceSize=2G`, not applicable to Java < 8
-    new_min: 256M              # will be `-Xmn=256M`
+    new_min: 256M              # will be `-Xmn256M`
 #    new_max: 256M              # will be `-XX:MaxNewSize=256M`
 #    survivor_ratio: 8          # will be `-XX:SurvivorRatio=8`
 #    target_survivor_ratio: 50  # will be `-XX:TargetSurvivorRatio=50`
