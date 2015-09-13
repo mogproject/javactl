@@ -1,10 +1,17 @@
 ---
 app:
+  name: your-app
   home: /path/to/your-app
   jar: bin/your-app-assembly-0.1.0.jar
-#  entry_point: com.example.your_app.Main  # You can specify the entry point.
+#  entry_point: com.example.your_app.Main  # You may specify the entry point.
 #  command: bin/your-app  # If you don't want to java command directly, specify the command. (It's useful for Play application)
-#  pid_file: your-app.pid  # If the process id file is given, a duplicate launch is not allowed.
+  pid_file: your-app.pid  # If the process id file is given, a duplicate launch is not allowed.
+
+os:
+  user: app-user  # verify running user
+  env:  # customize environment variables
+    YOUR_APP_ENV_VAR1: 12345
+    YOUR_APP_ENV_VAR2: /path/to/xxx
 
 java:
   home: /usr/java/latest       # will be set to JAVA_HOME
@@ -42,26 +49,36 @@ java:
     - "-XX:+CMSScavengeBeforeRemark"
 
 log:
-  base_dir: logs  # This directory will be created under the app.home directory when it is relative path.
   console:  # stdout and stderr will be redirected to this file
-    name: console.log
-    rotate: daily
-    preserve: 60
-  gc:  # will be `-verbose:gc -XX:+PrintGCDateStamps -XX:+PrintGCDetails -Xloggc:/path/to/your-app/logs/gc.log`
-    name: gc.log
-    rotate: 100M
-    preserve: 10
-  heap_dump: true  # will be `-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/path/to/your-app/logs`
 
-os:
-  user: app-user  # verify running user
-  env:  # customize environment variables
-    YOUR_APP_ENV_VAR1: 12345
-    YOUR_APP_ENV_VAR2: /path/to/xxx
+    # javactl provides two layers of log rotation.
+    #   1. Timestamp based filename
+    #     When the application starts, a file with name `{{prefix}}_%Y%m%d_%H%M%S.log` will be created.
+    #   2. Size based rotation (useful for long-time running application)
+    #     Once file reaches to the predetermined size, the file will be save with extensions like `.1`, `.2` etc.
+    #     Then, original file will be truncated.
+    # The parent directry will be created under the app.home directory if it is a relative path.
+    prefix: logs/console/console
+    max_size: 10M
+    backup: 10
+
+    # Every time before starting the application, old files with the prefix are removed.
+    # Old files are the files whose modified time is earlier than [now] minus preserve [days].
+    preserve: 60
+
+  gc:  # will be `-verbose:gc -XX:+PrintGCDateStamps -XX:+PrintGCDetails`
+    prefix: logs/gc/gc  # will be `-Xloggc:/path/to/your-app/logs/gc/gc_%Y%m%d_%H%M%S.log`
+    max_size: 10M  # will be `-XX:+UseGCLogFileRotation -XX:GCLogFileSize=10M`
+    backup: 10  # will be `-XX:NumberOfGCLogFiles=10`
+    preserve: 60
+
+  dump:
+    prefix: logs/dump  # will be `-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/path/to/your-app/logs/dump`
 
 pre:  # These commands will be executed before launching the Java application
   - echo 'Pre command is now running.'
 
 post:  # These commands will be executed after launching the Java application
-  - echo 'Post command is now running.'
+  - echo 'Post command[0] is now running.'
+  - echo 'Post command[1] is now running.'
 

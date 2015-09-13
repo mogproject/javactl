@@ -28,7 +28,7 @@ YAML-Configurable Java Application Wrapper
 Features
 --------
 
-*Launch your Java application more safely, explicitly and flexibly*
+*Launch your Java application more safely, explicitly and flexibly!*
 
 This script does ...
 
