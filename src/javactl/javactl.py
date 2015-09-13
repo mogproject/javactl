@@ -1,6 +1,7 @@
 from __future__ import division, print_function, absolute_import, unicode_literals
 
 import sys
+import traceback
 from datetime import datetime
 from javactl.setting.setting import Setting
 from javactl.logger import SystemLogger
@@ -25,7 +26,6 @@ def main():
         return 0
     except Exception as e:
         print('%s: %s' % (e.__class__.__name__, e))
-        import traceback
-        print(traceback.print_exc())
+        # print(traceback.print_exc())
         return 2
     return return_code

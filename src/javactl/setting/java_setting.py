@@ -103,4 +103,3 @@ class JavaSetting(CaseClass):
 
     def get_args(self):
         return [self.get_executable()] + self.get_opts()
-
