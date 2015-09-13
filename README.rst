@@ -85,9 +85,25 @@ See an `example <https://github.com/mogproject/javactl/blob/master/example.yml>`
 Now Launch Your Application
 ---------------------------
 
+* Dry-run mode
+
+::
+
+    javactl --check /path/to/your-app.yml
+
+* Launch java application
+
 ::
 
     javactl /path/to/your-app.yml
+
+
+* Launch with arguments
+
+::
+
+    javactl /path/to/your-app.yml --option-for-your-app arg1 arg2
+
 
 That's it!
 
