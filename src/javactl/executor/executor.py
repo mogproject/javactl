@@ -112,8 +112,10 @@ class Executor(object):
 
         time_start = time.time()
         if self.setting.dry_run:
-            print('Would execute: cmd=%s, cwd=%s, env=%s' % (
-                map(str, self.setting.get_args(now)), self.setting.app_setting.home, self.setting.get_environ()
+            print('Would execute: cwd=%s, cmd=[\n%s\n], env={\n%s\n}' % (
+                self.setting.app_setting.home,
+                '\n'.join('  %s' % s for s in self.setting.get_args(now)),
+                '\n'.join('  %s=%s' % kv for kv in self.setting.get_environ().items())
             ))
             ret = 0
         else:
