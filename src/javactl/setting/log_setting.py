@@ -63,13 +63,23 @@ class LogSetting(CaseClass):
                 '-XX:HeapDumpPath=%s' % self.prefix,
             ]
 
-    def __init__(self, home, console=None, gc=None, dump=None):
+    class Error(CaseClass):
+        def __init__(self, home, path=None):
+            CaseClass.__init__(self, ('path', omap(lambda p: normalize_path(p, home), path)))
+
+        def get_opts(self):
+            return [] if self.path is None else [
+                '-XX:ErrorFile=%s' % self.path,
+            ]
+
+    def __init__(self, home, console=None, gc=None, dump=None, error=None):
         CaseClass.__init__(
             self,
             ('console', LogSetting.Console(home, **oget(console, {}))),
             ('gc', LogSetting.GC(home, **oget(gc, {}))),
             ('dump', LogSetting.Dump(home, **oget(dump, {}))),
+            ('error', LogSetting.Error(home, **oget(error, {}))),
         )
 
     def get_opts(self, now):
-        return self.gc.get_opts(now) + self.dump.get_opts()
+        return self.gc.get_opts(now) + self.dump.get_opts() + self.error.get_opts()

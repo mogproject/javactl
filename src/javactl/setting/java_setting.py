@@ -13,6 +13,7 @@ class JavaSetting(CaseClass):
                      heap_max=None,
                      perm_min=None,
                      perm_max=None,
+                     metaspace_min=None,
                      metaspace_max=None,
                      new_min=None,
                      new_max=None,
@@ -21,6 +22,8 @@ class JavaSetting(CaseClass):
             # constraints
             assert perm_min is None or java_version < 1.8, 'java.memory.perm_min is not applicable to java >= 1.8'
             assert perm_max is None or java_version < 1.8, 'java.memory.perm_man is not applicable to java >= 1.8'
+            assert metaspace_min is None or java_version >= 1.8, \
+                'java.memory.metaspace_min is not applicable to java < 1.8'
             assert metaspace_max is None or java_version >= 1.8, \
                 'java.memory.metaspace_max is not applicable to java < 1.8'
 
@@ -30,6 +33,7 @@ class JavaSetting(CaseClass):
                 ('heap_max', heap_max),
                 ('perm_min', perm_min),
                 ('perm_max', perm_max),
+                ('metaspace_min', metaspace_min),
                 ('metaspace_max', metaspace_max),
                 ('new_min', new_min),
                 ('new_max', new_max),
@@ -43,6 +47,7 @@ class JavaSetting(CaseClass):
                 omap(lambda s: '-Xmx%s' % s, self.heap_max),
                 omap(lambda s: '-XX:PermSize=%s' % s, self.perm_min),
                 omap(lambda s: '-XX:MaxPermSize=%s' % s, self.perm_max),
+                omap(lambda s: '-XX:MetaspaceSize=%s' % s, self.metaspace_min),
                 omap(lambda s: '-XX:MaxMetaspaceSize=%s' % s, self.metaspace_max),
                 omap(lambda s: '-Xmn%s' % s, self.new_min),
                 omap(lambda s: '-XX:MaxNewSize=%s' % s, self.new_max),
