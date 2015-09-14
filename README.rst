@@ -79,7 +79,7 @@ See an example below.
 Configuration Example
 ---------------------
 
-See an `example <https://github.com/mogproject/javactl/blob/master/example.yml>`_.
+See an `example <https://github.com/mogproject/javactl/blob/master/tests/resources/example.yml>`_.
 
 ---------------------------
 Now Launch Your Application

@@ -82,10 +82,10 @@ class Setting(CaseClass):
                          os_setting=os_setting, pre_commands=pre_commands, post_commands=post_commands)
 
     def get_args(self, now):
-        return chain.from_iterable([
+        return list(chain.from_iterable([
             self.app_setting.get_args(self.java_setting.get_args() + self.log_setting.get_opts(now)),
             self.extra_args,
-        ])
+        ]))
 
     def get_environ(self, now):
         d = {
