@@ -64,7 +64,8 @@ class Executor(object):
         dirs = [d for d in [
             omap(os.path.dirname, self.setting.log_setting.console.prefix),
             omap(os.path.dirname, self.setting.log_setting.gc.prefix),
-            self.setting.log_setting.dump.prefix
+            self.setting.log_setting.dump.prefix,
+            omap(os.path.dirname, self.setting.log_setting.error.path),
         ] if d is not None]
 
         for d in dirs:
