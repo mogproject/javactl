@@ -10,8 +10,9 @@ class TestSetting(TestCase):
         self.maxDiff = None
         s = Setting('tests/resources/example.yml').load_config()
         result = s.get_args(datetime(2015, 9, 10, 12, 34, 56, 789))
-        self.assertEqual(result, [
-            '/usr/java/latest/bin/java',
+        self.assertEqual(result[0], '/usr/java/latest/bin/java')
+        self.assertEqual(result[-2:], ['-jar', '/path/to/your-app/bin/your-app-assembly-0.1.0.jar'])
+        self.assertEqual(set(result[1:-2]), set([
             '-server',
             '-Xms64M',
             '-Xmx2G',
@@ -45,6 +46,4 @@ class TestSetting(TestCase):
             '-XX:+HeapDumpOnOutOfMemoryError',
             '-XX:HeapDumpPath=/path/to/your-app/logs/dump',
             '-XX:ErrorFile=/path/to/your-app/logs/hs_error_pid%p.log',
-            '-jar',
-            '/path/to/your-app/bin/your-app-assembly-0.1.0.jar'
-        ])
+        ]))
