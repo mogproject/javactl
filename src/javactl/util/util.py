@@ -3,6 +3,7 @@ from __future__ import division, print_function, absolute_import, unicode_litera
 import os
 import errno
 import subprocess
+import six
 
 
 #
@@ -108,3 +109,54 @@ def omap(function, optional):
 
 def oget(optional, default=None):
     return default if optional is None else optional
+
+
+#
+# String util
+#
+def is_unicode(s):
+    return (six.PY2 and isinstance(s, unicode)) or (six.PY3 and isinstance(s, str))
+
+
+def is_strlike(s):
+    return isinstance(s, (six.string_types, bytes))
+
+
+def to_unicode(s, encoding=None, errors='strict'):
+    """
+    Make unicode string from any value
+    :param s:
+    :param encoding:
+    :param errors:
+    :return: unicode
+    """
+    encoding = encoding or 'utf-8'
+
+    if is_unicode(s):
+        return s
+    elif is_strlike(s):
+        return s.decode(encoding, errors)
+    else:
+        if six.PY2:
+            return str(s).decode(encoding, errors)
+        else:
+            return str(s)
+
+
+def to_str(s, encoding=None, errors='strict'):
+    """
+    Make str from any value
+    :param s:
+    :param encoding:
+    :param errors:
+    :return: str (not unicode in Python2, nor bytes in Python3)
+    """
+    encoding = encoding or 'utf-8'
+
+    if is_strlike(s):
+        if six.PY2:
+            return s.encode(encoding, errors) if isinstance(s, unicode) else s
+        else:
+            return s.decode(encoding, errors) if isinstance(s, bytes) else s
+    else:
+        return str(s)

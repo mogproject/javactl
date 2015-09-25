@@ -8,6 +8,7 @@ try:
 except ImportError:
     SYSLOG_AVAILABLE = False
 from javactl.logger.logger import Logger
+from javactl.util import util
 
 
 class SystemLogger(Logger):
@@ -22,5 +23,5 @@ class SystemLogger(Logger):
                 print('Would write to syslog: priority=%s, message=%s' % (priority, message))
             else:
                 syslog.openlog(self.name, syslog.LOG_PID)
-                syslog.syslog(priority, message)
+                syslog.syslog(priority, util.to_str(message, 'utf-8', 'ignore'))
                 syslog.closelog()
