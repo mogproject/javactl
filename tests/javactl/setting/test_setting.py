@@ -1,7 +1,7 @@
 from __future__ import division, print_function, absolute_import, unicode_literals
 
 from datetime import datetime
-from tests.universal import TestCase
+from mog_commons.unittest import TestCase
 from javactl.setting.setting import Setting
 
 

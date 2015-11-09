@@ -1,7 +1,8 @@
 from __future__ import division, print_function, absolute_import, unicode_literals
 
 import six
-from javactl.util import CaseClass, normalize_path, omap, oget, DataSize
+from mog_commons.functional import oget
+from mog_commons.case_class import CaseClass
 
 
 class OSSetting(CaseClass):

@@ -6,23 +6,22 @@ import re
 import time
 import getpass
 import glob
-import subprocess
 from datetime import datetime, timedelta
-from javactl.util import execute_command, capture_command, execute_command_with_pid, pid_exists, omap, oget
+from mog_commons.command import execute_command, capture_command, execute_command_with_pid, pid_exists
+from mog_commons.case_class import CaseClass
+from mog_commons.functional import omap, oget
+from mog_commons.types import *
+from mog_commons.string import to_unicode
+from javactl.logger.logger import Logger
 from javactl.logger.console_logger import get_console_logger
+from javactl.setting.setting import Setting
 from javactl.exceptions import DuplicateError
 
 
-class Executor(object):
+class Executor(CaseClass):
+    @types(setting=Setting, logger=Logger, failed=bool)
     def __init__(self, setting, logger, failed=False):
-        self.setting = setting
-        self.logger = logger
-        self.failed = failed
-
-    def copy(self, **args):
-        d = {'setting': self.setting, 'logger': self.logger, 'failed': self.failed}
-        d.update(args)
-        return Executor(**d)
+        CaseClass.__init__(self, ('setting', setting), ('logger', logger), ('failed', failed))
 
     def check_requirement(self):
         return self._check_user()._check_java_version()._check_duplicate()
@@ -35,9 +34,9 @@ class Executor(object):
 
     def _check_java_version(self):
         ret, stdout, stderr = capture_command([self.setting.java_setting.get_executable(), '-version'])
-        assert ret == 0, 'Failed to get java version: %s' % stderr
+        assert ret == 0, 'Failed to get java version: ret=%d, stderr=%s' % (ret, stderr)
 
-        first_line = ''.join(stderr.splitlines()[:1])
+        first_line = ''.join(to_unicode(stderr).splitlines()[:1])
         m = re.compile(r"""java version \"(\d+[.]\d+)[.]\d+_\d+\"""").match(first_line)
         if m:
             actual = float(m.group(1))
