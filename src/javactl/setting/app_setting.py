@@ -1,7 +1,9 @@
 from __future__ import division, print_function, absolute_import, unicode_literals
 
 import os
-from javactl.util import CaseClass, normalize_path, omap, oget
+from mog_commons.case_class import CaseClass
+from mog_commons.functional import omap
+from javactl.util import normalize_path
 
 
 class AppSetting(CaseClass):

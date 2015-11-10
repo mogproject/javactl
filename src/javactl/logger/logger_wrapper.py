@@ -2,7 +2,7 @@ import os
 import threading
 
 
-# steeled from http://codereview.stackexchange.com/questions/6567/
+# stole from http://codereview.stackexchange.com/questions/6567/
 class LoggerWrapper(threading.Thread):
     """
     Read text message from a pipe and redirect them

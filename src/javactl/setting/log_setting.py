@@ -1,6 +1,8 @@
 from __future__ import division, print_function, absolute_import, unicode_literals
 
-from javactl.util import CaseClass, normalize_path, omap, oget, DataSize
+from mog_commons.case_class import CaseClass
+from mog_commons.functional import omap, oget
+from javactl.util import normalize_path, DataSize
 
 
 class LogSetting(CaseClass):

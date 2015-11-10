@@ -1,8 +1,8 @@
 from __future__ import division, print_function, absolute_import, unicode_literals
 
 import os
-import subprocess
-from javactl.util import CaseClass, normalize_path, omap, oget
+from mog_commons.case_class import CaseClass
+from mog_commons.functional import omap, oget
 
 
 class JavaSetting(CaseClass):
@@ -103,7 +103,7 @@ class JavaSetting(CaseClass):
 
     def get_opts(self):
         sv = ['-server'] if self.server else []
-        ev = ['-D%s=%s' % (k, v) for k, v in self.env.items()]
+        ev = ['-D%s=%s' % (k, v) for k, v in sorted(self.env.items())]
         return sv + self.memory.get_opts() + self.jmx.get_opts() + ev + self.option
 
     def get_args(self):

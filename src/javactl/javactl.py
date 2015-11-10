@@ -1,7 +1,6 @@
 from __future__ import division, print_function, absolute_import, unicode_literals
 
 import sys
-import traceback
 from datetime import datetime
 from javactl.setting.setting import Setting
 from javactl.logger import SystemLogger
@@ -9,14 +8,15 @@ from javactl.executor.executor import Executor
 from javactl.exceptions import DuplicateError
 
 
-def main():
+def main(args=sys.argv):
     """
     Main function
     """
 
     return_code = 0
+    base_setting = Setting().parse_args(args)
     try:
-        setting = Setting().parse_args(sys.argv).load_config()
+        setting = base_setting.load_config()
         now = datetime.now()
         ex = Executor(setting, SystemLogger(setting.dry_run))
         result = ex.check_requirement().create_directories().clean_old_logs(now).execute(now)
@@ -26,6 +26,8 @@ def main():
         return 0
     except Exception as e:
         print('%s: %s' % (e.__class__.__name__, e))
-        # print(traceback.print_exc())
+        if base_setting.debug:
+            import traceback
+            traceback.print_exc()
         return 2
     return return_code

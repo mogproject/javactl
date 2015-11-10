@@ -4,12 +4,13 @@ import subprocess
 from itertools import chain
 import yaml
 import six
+from mog_commons.case_class import CaseClass
+from mog_commons.functional import oget
 from javactl.setting import arg_parser
 from javactl.setting.app_setting import AppSetting
 from javactl.setting.java_setting import JavaSetting
 from javactl.setting.log_setting import LogSetting
 from javactl.setting.os_setting import OSSetting
-from javactl.util import CaseClass, omap, oget
 
 
 class Setting(CaseClass):
@@ -19,6 +20,7 @@ class Setting(CaseClass):
                  config_path=None,
                  extra_args=None,
                  dry_run=False,
+                 debug=False,
                  app_setting=None,
                  java_setting=None,
                  log_setting=None,
@@ -29,6 +31,7 @@ class Setting(CaseClass):
         :param config_path:
         :param extra_args: arguments for Java application
         :param dry_run:
+        :param debug: debug mode if true
         :param app_setting:
         :param java_setting:
         :param log_setting:
@@ -42,6 +45,7 @@ class Setting(CaseClass):
             ('config_path', config_path),
             ('extra_args', oget(extra_args, [])),
             ('dry_run', dry_run),
+            ('debug', debug),
             ('app_setting', app_setting),
             ('java_setting', java_setting),
             ('log_setting', log_setting),
@@ -50,14 +54,9 @@ class Setting(CaseClass):
             ('post_commands', oget(post_commands, []))
         )
 
-    def copy(self, **args):
-        d = self.values()
-        d.update(args)
-        return Setting(**d)
-
     def parse_args(self, argv):
         option, config_path, extra_args = arg_parser.parser.parse_args(argv[1:])
-        return self.copy(config_path=config_path, extra_args=extra_args, dry_run=option.dry_run)
+        return self.copy(config_path=config_path, extra_args=extra_args, dry_run=option.dry_run, debug=option.debug)
 
     def load_config(self):
         if not self.config_path:

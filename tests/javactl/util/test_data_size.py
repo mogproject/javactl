@@ -1,7 +1,7 @@
 from __future__ import division, print_function, absolute_import, unicode_literals
 
 from javactl.util.data_size import DataSize
-from tests.universal import TestCase
+from mog_commons.unittest import TestCase
 
 
 class TestDataSize(TestCase):
@@ -24,12 +24,12 @@ class TestDataSize(TestCase):
         self.assertEqual(DataSize('123G').scale, 'G')
 
     def test_init_error(self):
-        self.assertRaisesRegexp(AssertionError, '^Unknown scale: $', DataSize, '')
-        self.assertRaisesRegexp(AssertionError, '^Unknown scale: 3$', DataSize, '1.23')
-        self.assertRaisesRegexp(AssertionError, '^Unknown scale: p$', DataSize, 'p')
+        self.assertRaisesMessage(AssertionError, 'Unknown scale: ', DataSize, '')
+        self.assertRaisesMessage(AssertionError, 'Unknown scale: 3', DataSize, '1.23')
+        self.assertRaisesMessage(AssertionError, 'Unknown scale: p', DataSize, 'p')
 
-        self.assertRaisesRegexp(AssertionError, '^Size must be an integer: g$', DataSize, 'gg')
-        self.assertRaisesRegexp(AssertionError, '^Size must be an integer: 1[.]23$', DataSize, '1.23k')
+        self.assertRaisesMessage(AssertionError, 'Size must be an integer: g', DataSize, 'gg')
+        self.assertRaisesMessage(AssertionError, 'Size must be an integer: 1.23', DataSize, '1.23k')
 
     def test_bytes(self):
         self.assertEqual(DataSize('0m').bytes(), 0)

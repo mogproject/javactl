@@ -1,0 +1,72 @@
+---
+app:
+  name: your-app
+  home: {{ tempdir }}
+  jar: bin/your-app-assembly-0.1.0.jar
+  pid_file: your-app.pid
+
+os:
+  user: {{ os_user }}
+  env:
+    YOUR_APP_ENV_VAR1: 12345
+    YOUR_APP_ENV_VAR2: /path/to/xxx
+
+java:
+  home: {{ curdir }}/tests/resources/mock/jdk8
+  version: 1.8
+  server: true
+  
+  memory:
+    heap_min: 64M
+    heap_max: 2G
+    metaspace_min: 1G
+    metaspace_max: 2G
+    new_min: 256M
+    new_max: 256M
+    survivor_ratio: 8
+    target_survivor_ratio: 50
+
+  jmx:
+    port: 20001
+    ssl: false
+    authenticate: false
+
+  env:
+    file.encoding: UTF-8
+    http.port: 9000
+    http.netty.maxInitialLineLength: 8192
+    com.amazonaws.sdk.disableCertChecking: true
+
+  option:
+    - "-XX:+UseConcMarkSweepGC"
+    - "-XX:+CMSParallelRemarkEnabled"
+    - "-XX:+UseCMSInitiatingOccupancyOnly"
+    - "-XX:CMSInitiatingOccupancyFraction=70"
+    - "-XX:+ScavengeBeforeFullGC"
+    - "-XX:+CMSScavengeBeforeRemark"
+
+log:
+  console:
+    prefix: logs/console/console
+    max_size: 10M
+    backup: 10
+    preserve: 60
+
+  gc:
+    prefix: logs/gc/gc
+    max_size: 10M
+    backup: 10
+    preserve: 60
+
+  dump:
+    prefix: logs/dump
+
+  error:
+    path: logs/hs_error_pid%p.log
+
+#pre:
+#  - echo 'Pre command is now running.'
+
+#post:
+#  - echo 'Post command[0] is now running.'
+#  - echo 'Post command[1] is now running.'
