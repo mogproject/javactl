@@ -55,8 +55,12 @@ class Setting(CaseClass):
         )
 
     def parse_args(self, argv):
-        option, config_path, extra_args = arg_parser.parser.parse_args(argv[1:])
-        return self.copy(config_path=config_path, extra_args=extra_args, dry_run=option.dry_run, debug=option.debug)
+        option, args = arg_parser.parser.parse_args(argv[1:])
+        if not args:
+            arg_parser.parser.print_help()
+            arg_parser.parser.exit(2)
+
+        return self.copy(config_path=args[0], extra_args=args[1:], dry_run=option.dry_run, debug=option.debug)
 
     def load_config(self):
         if not self.config_path:

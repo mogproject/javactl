@@ -47,3 +47,12 @@ class TestSetting(TestCase):
             '-XX:HeapDumpPath=/path/to/your-app/logs/dump',
             '-XX:ErrorFile=/path/to/your-app/logs/hs_error_pid%p.log',
         ]))
+
+    def test_parse_args(self):
+        with self.withOutput() as (out, err):
+            self.assertSystemExit(2, Setting().parse_args, [])
+            self.assertSystemExit(2, Setting().parse_args, ['--check'])
+            self.assertSystemExit(2, Setting().parse_args, ['--check', '--debug'])
+
+    def test_load_config(self):
+        self.assertEqual(Setting().load_config(), Setting())
