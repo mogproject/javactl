@@ -21,7 +21,7 @@ class JavaSetting(CaseClass):
                      target_survivor_ratio=None):
             # constraints
             assert perm_min is None or java_version < 1.8, 'java.memory.perm_min is not applicable to java >= 1.8'
-            assert perm_max is None or java_version < 1.8, 'java.memory.perm_man is not applicable to java >= 1.8'
+            assert perm_max is None or java_version < 1.8, 'java.memory.perm_max is not applicable to java >= 1.8'
             assert metaspace_min is None or java_version >= 1.8, \
                 'java.memory.metaspace_min is not applicable to java < 1.8'
             assert metaspace_max is None or java_version >= 1.8, \
