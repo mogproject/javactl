@@ -35,7 +35,7 @@ java:
     ssl: false                 # will be `-Dcom.sun.management.jmxremote.ssl=false`
     authenticate: false        # will be `-Dcom.sun.management.jmxremote.authenticate=false`
 
-  env:                         # will be converted to `-D<key>=<value>` options
+  prop:                        # will be converted to `-D<key>=<value>` options
     file.encoding: UTF-8
     http.port: 9000
     http.netty.maxInitialLineLength: 8192
