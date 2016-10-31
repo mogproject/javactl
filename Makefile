@@ -17,7 +17,7 @@ dev-uninstall:
 	$(PYTHON) setup.py develop -u
 
 pep8:
-	pep8 --max-line-length 120 --ignore E402,E731 src/$(PROG) tests
+	pep8 --max-line-length 140 --ignore E402,E731 src/$(PROG) tests
 
 test: pep8
 	$(PYTHON) setup.py test
