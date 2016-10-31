@@ -66,8 +66,8 @@ class JavaSetting(CaseClass):
             xs = [
                 '-Dcom.sun.management.jmxremote',
                 omap(lambda x: '-Dcom.sun.management.jmxremote.port=%d' % x, self.port),
-                omap(lambda b: '-Dcom.sun.management.jmxremote.ssl=%s' % str(b).lower(), self.ssl),
-                omap(lambda b: '-Dcom.sun.management.jmxremote.authenticate=%s' % str(b).lower(), self.authenticate),
+                omap(lambda b: '-Dcom.sun.management.jmxremote.ssl=%s' % JavaSetting.py_to_java_str(b), self.ssl),
+                omap(lambda b: '-Dcom.sun.management.jmxremote.authenticate=%s' % JavaSetting.py_to_java_str(b), self.authenticate),
             ]
             return [x for x in xs if x is not None]
 
@@ -103,8 +103,16 @@ class JavaSetting(CaseClass):
 
     def get_opts(self):
         sv = ['-server'] if self.server else []
-        pr = ['-D%s=%s' % (k, v) for k, v in sorted(self.prop.items())]
+        pr = ['-D%s=%s' % (k, JavaSetting.py_to_java_str(v)) for k, v in sorted(self.prop.items())]
         return sv + self.memory.get_opts() + self.jmx.get_opts() + pr + self.option
 
     def get_args(self):
         return [self.get_executable()] + self.get_opts()
+
+    @staticmethod
+    def py_to_java_str(value):
+        """Convert python data to Java-like string"""
+        if isinstance(value, bool):
+            return str(value).lower()
+        else:
+            return str(value)
