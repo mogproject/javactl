@@ -28,19 +28,19 @@ YAML-Configurable Java Application Wrapper
 Features
 --------
 
-*Launch your Java application more safely, explicitly and flexibly!*
+*Launch your Java application more safely, explicitly, and flexibly!*
 
 This script does ...
 
-* (before launch)
-   * Load settings from YAML file
-   * Verify OS user name and Java version
-   * Check the application is already running if the duplicate running is not allowed
+* (before the launch)
+   * Load settings from a YAML file
+   * Verify the OS user name and Java version
+   * Check if the application has already been running when duplicate running is prohibited
    * Execute pre-launch commands
-   * Logging to syslog
-* Launch the Java application with proper options
-* (after launch)
-   * Logging to syslog
+   * Log to syslog
+* Launch the Java application with the proper options
+* (after the launch)
+   * Log to syslog
    * Execute post-launch commands
 
 ------------
@@ -55,7 +55,7 @@ Dependencies
 Installation
 ------------
 
-* ``pip`` command may need ``sudo``
+* ``pip`` command may require ``sudo``
 
 +-------------------------+-------------------------------------+
 | Operation               | Command                             |
@@ -73,13 +73,13 @@ Installation
 
 * Then, write your configuration to the file ``your-app.yml``.
 
-See an example below.
+See the example below.
 
 ---------------------
 Configuration Example
 ---------------------
 
-See an `example <https://github.com/mogproject/javactl/blob/master/tests/resources/example.yml>`_.
+See this `example <https://github.com/mogproject/javactl/blob/master/tests/resources/example.yml>`_.
 
 ---------------------------
 Now Launch Your Application
@@ -91,7 +91,7 @@ Now Launch Your Application
 
     javactl --check /path/to/your-app.yml
 
-* Launch java application
+* Launch the java application
 
 ::
 
