@@ -66,8 +66,8 @@ class JavaSetting(CaseClass):
             xs = [
                 '-Dcom.sun.management.jmxremote',
                 omap(lambda x: '-Dcom.sun.management.jmxremote.port=%d' % x, self.port),
-                omap(lambda b: '-Dcom.sun.management.jmxremote.ssl=%s' % str(b).lower(), self.ssl),
-                omap(lambda b: '-Dcom.sun.management.jmxremote.authenticate=%s' % str(b).lower(), self.authenticate),
+                omap(lambda b: '-Dcom.sun.management.jmxremote.ssl=%s' % JavaSetting.py_to_java_str(b), self.ssl),
+                omap(lambda b: '-Dcom.sun.management.jmxremote.authenticate=%s' % JavaSetting.py_to_java_str(b), self.authenticate),
             ]
             return [x for x in xs if x is not None]
 
@@ -77,15 +77,15 @@ class JavaSetting(CaseClass):
                  server=None,
                  memory=None,
                  jmx=None,
-                 env=None,
+                 prop=None,
                  option=None):
         # constraints
         assert home is not None and os.path.isabs(home), 'java.home is required and must be an absolute path'
         assert version is not None, 'java.version is required'
 
         # TODO: check value types and format
-        assert env is None or isinstance(env, dict), 'java.env must be a dict'
-        assert option is None or isinstance(option, list), 'java.env must be a list'
+        assert prop is None or isinstance(prop, dict), 'java.prop must be a dict'
+        assert option is None or isinstance(option, list), 'java.option must be a list'
 
         CaseClass.__init__(
             self,
@@ -94,7 +94,7 @@ class JavaSetting(CaseClass):
             ('server', server),
             ('memory', JavaSetting.Memory(version, **oget(memory, {}))),
             ('jmx', JavaSetting.JMX(**oget(jmx, {}))),
-            ('env', oget(env, {})),
+            ('prop', oget(prop, {})),
             ('option', oget(option, [])),
         )
 
@@ -103,8 +103,16 @@ class JavaSetting(CaseClass):
 
     def get_opts(self):
         sv = ['-server'] if self.server else []
-        ev = ['-D%s=%s' % (k, v) for k, v in sorted(self.env.items())]
-        return sv + self.memory.get_opts() + self.jmx.get_opts() + ev + self.option
+        pr = ['-D%s=%s' % (k, JavaSetting.py_to_java_str(v)) for k, v in sorted(self.prop.items())]
+        return sv + self.memory.get_opts() + self.jmx.get_opts() + pr + self.option
 
     def get_args(self):
         return [self.get_executable()] + self.get_opts()
+
+    @staticmethod
+    def py_to_java_str(value):
+        """Convert python data to Java-like string"""
+        if isinstance(value, bool):
+            return str(value).lower()
+        else:
+            return str(value)

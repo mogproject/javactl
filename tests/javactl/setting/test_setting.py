@@ -26,7 +26,7 @@ class TestSetting(TestCase):
             '-Dcom.sun.management.jmxremote.port=20001',
             '-Dcom.sun.management.jmxremote.ssl=false',
             '-Dcom.sun.management.jmxremote.authenticate=false',
-            '-Dcom.amazonaws.sdk.disableCertChecking=True',
+            '-Dcom.amazonaws.sdk.disableCertChecking=true',
             '-Dfile.encoding=UTF-8',
             '-Dhttp.netty.maxInitialLineLength=8192',
             '-Dhttp.port=9000',

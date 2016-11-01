@@ -62,7 +62,7 @@ class TestJavaCtl(TestCase):
                 ' -server -Xms64M -Xmx2G -XX:MetaspaceSize=1G -XX:MaxMetaspaceSize=2G -Xmn256M -XX:MaxNewSize=256M ',
                 '-XX:SurvivorRatio=8 -XX:TargetSurvivorRatio=50 -Dcom.sun.management.jmxremote ',
                 '-Dcom.sun.management.jmxremote.port=20001 -Dcom.sun.management.jmxremote.ssl=false ',
-                '-Dcom.sun.management.jmxremote.authenticate=false -Dcom.amazonaws.sdk.disableCertChecking=True ',
+                '-Dcom.sun.management.jmxremote.authenticate=false -Dcom.amazonaws.sdk.disableCertChecking=true ',
                 '-Dfile.encoding=UTF-8 -Dhttp.netty.maxInitialLineLength=8192 -Dhttp.port=9000 ',
                 '-XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+UseCMSInitiatingOccupancyOnly ',
                 '-XX:CMSInitiatingOccupancyFraction=70 -XX:+ScavengeBeforeFullGC -XX:+CMSScavengeBeforeRemark ',
