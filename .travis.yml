@@ -15,6 +15,7 @@ cache: pip
 
 install:
   - pip install coverage==3.7
+  - pip install idna==2.7
   - pip install coveralls
 
 script:
