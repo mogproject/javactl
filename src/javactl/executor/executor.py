@@ -37,7 +37,7 @@ class Executor(CaseClass):
         assert ret == 0, 'Failed to get java version: ret=%d, stderr=%s' % (ret, stderr)
 
         first_line = ''.join(to_unicode(stderr).splitlines()[:1])
-        m = re.compile(r"""java version \"(\d+[.]\d+)[.]\d+_\d+\"""").match(first_line)
+        m = re.compile(r"""(?:java|openjdk) version \"(\d+[.]\d+)[.]\d+_\d+\"""").match(first_line)
         if m:
             actual = float(m.group(1))
         else:
