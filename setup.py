@@ -25,7 +25,7 @@ setup(
     license='Apache 2.0 License',
     url='https://github.com/mogproject/javactl',
     install_requires=[
-        'pyyaml',
+        'pyyaml' + (' == 3.12' if sys.version_info[:2] == (3, 2) else ' < 5'),
         'six',
         'mog-commons',
     ],
